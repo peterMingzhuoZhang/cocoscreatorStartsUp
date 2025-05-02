@@ -1,0 +1,17 @@
+{
+  "general": {
+    "highQuality": true
+  },
+  "__version__": "1.0.6",
+  "fbx": {
+    "legacyFbxImporter": {
+      "visible": true
+    }
+  },
+  "physics": {
+    "collisionMatrix": {
+      "0": 1
+    }
+  },
+  "custom_joint_texture_layouts": []
+}
