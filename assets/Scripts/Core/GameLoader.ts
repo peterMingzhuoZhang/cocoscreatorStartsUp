@@ -3,6 +3,7 @@ import { ServiceLocator } from './ServiceLocator';
 import { AsyncLoader } from './AsyncLoader';
 import { GameManager } from '../Managers/GameManager';
 import { UIManager } from '../Managers/UIManager';
+import { ResourceManager } from '../Managers/ResourceManager';
 
 const { ccclass, property } = _decorator;
 
@@ -53,7 +54,14 @@ export class GameLoader extends AsyncLoader {
             ServiceLocator.register(UIManager, ui);
             let uiCanvas = this.node.getChildByName("UI").getChildByName("Canvas");
             await ui.init(uiCanvas, this);
-        }, 70, () => ServiceLocator.get(UIManager)?.getInitProgress() ?? 1);
+        }, 40, () => ServiceLocator.get(UIManager)?.getInitProgress() ?? 1);
+
+        this.enqueue(async () => {
+            const rm = new ResourceManager();
+            ServiceLocator.register(ResourceManager, rm);
+            await rm.init();
+        }, 30, () => ServiceLocator.get(ResourceManager)?.getInitProgress() ?? 1);
+
 
         this.startAsync().then(() => {
             director.loadScene(this.targetScene);

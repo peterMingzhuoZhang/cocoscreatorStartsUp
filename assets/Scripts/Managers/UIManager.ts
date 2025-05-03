@@ -1,4 +1,4 @@
-import { _decorator, Component, Label, Button, Node, RichText } from 'cc';
+import { _decorator, Component, Label, Button, Node, RichText, Sprite, spriteAssembler, SpriteFrame, UITransform } from 'cc';
 import { GameLoader } from '../Core/GameLoader';
 import { FollowMainCamera } from '../Utility/FollowMainCamera';
 
@@ -15,8 +15,11 @@ export class UIManager extends Component {
     @property(Node)
     private mTouchArea: Node;
 
+    @property(Sprite)
+    private mTestSprite: Sprite;
+
     public currentInitProcess = 0;
-    public totalProcess = 3;
+    public totalProcess = 4;
 
     onLoad() {
         console.log('UI manager Initializing');
@@ -51,6 +54,11 @@ export class UIManager extends Component {
         console.log('Initializing touchArea...');
         this.mTouchArea = canvas.getChildByName('TouchArea');
         this.currentInitProcess++;
+
+        console.log('Initializing testSprite...');
+        this.mTestSprite = canvas.getChildByName('TestSprite')?.getComponent(Sprite);
+        this.currentInitProcess++;
+
         await new Promise(resolve => setTimeout(resolve, 100));
     }
 
@@ -63,12 +71,14 @@ export class UIManager extends Component {
         this.scoreText.node.active = true;
         this.homeButton.node.active = true;
         this.mTouchArea.active = true;
+        this.mTestSprite.node.active = true;
     }
 
     public UIDisappear(): void {
         this.scoreText.node.active = false;
         this.homeButton.node.active = false;
         this.mTouchArea.active = false;
+        this.mTestSprite.node.active = false;
     }
 
     public setScoreText(totalScore: number): void {
@@ -79,6 +89,11 @@ export class UIManager extends Component {
 
     public customUpdate(): void {
         // 可选的 UI 更新逻辑
+    }
+
+    public InitTestSprite(sprite: SpriteFrame){
+        this.mTestSprite.spriteFrame = sprite;
+        this.mTestSprite.getComponent(UITransform).setContentSize(100,100);
     }
 }
 
